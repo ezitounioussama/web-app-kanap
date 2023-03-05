@@ -11,6 +11,7 @@ const updateTotalPrice = () => {
     item.qty = quantity;
     sumTotal += item.price * quantity;
   });
+  localStorage.setItem("items", JSON.stringify(items));
   total.innerHTML = sumTotal.toFixed(2);
 };
 
@@ -74,11 +75,34 @@ deleteItem.forEach((button) => {
 
 // ! Getting the data from the form
 
-const firstName = document.getElementById("firstName");
-const lastName = document.getElementById("lastName");
-const address = document.getElementById("address");
-const city = document.getElementById("city");
-const email = document.getElementById("email");
-const order = document.getElementById("order");
-let arr = [];
-order.addEventListener("click", () => {});
+// Get the form element
+const form = document.querySelector(".cart__order__form");
+
+// Add event listener to the submit button
+form.addEventListener("submit", (e) => {
+  // Prevent the default form submission
+  e.preventDefault();
+
+  // Create a new FormData object to collect the form data
+  const formData = new FormData(form);
+
+  // Generate a random order number
+  const orderNumber = Math.floor(Math.random() * 1000000000);
+
+  // Store the form data and order number in local storage with the items in the cart
+  const order = {
+    firstName: formData.get("firstName"),
+    lastName: formData.get("lastName"),
+    address: formData.get("address"),
+    city: formData.get("city"),
+    email: formData.get("email"),
+    orderNumber: orderNumber,
+    items: JSON.parse(localStorage.getItem("items")),
+  };
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  orders.push(order);
+  localStorage.setItem("orders", JSON.stringify(orders));
+
+  // Redirect to the confirmation page with the order number in the URL query parameter
+  window.location.href = `confirmation.html?orderId=${orderNumber}`;
+});
