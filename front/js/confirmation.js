@@ -1,5 +1,6 @@
 // Get the order number from the URL query parameter
 const urlParams = new URLSearchParams(window.location.search);
+console.log(window.location.search);
 const orderId = urlParams.get("orderId");
 
 // Retrieve the order from local storage based on the order number

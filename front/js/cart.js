@@ -99,6 +99,7 @@ form.addEventListener("submit", (e) => {
     orderNumber: orderNumber,
     items: JSON.parse(localStorage.getItem("items")),
   };
+
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
   orders.push(order);
   localStorage.setItem("orders", JSON.stringify(orders));
