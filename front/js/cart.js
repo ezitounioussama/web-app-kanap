@@ -75,35 +75,36 @@ deleteItem.forEach((button) => {
 
 // ! Getting the data from the form
 
-// Get the form element
 const form = document.querySelector(".cart__order__form");
 
-// Add event listener to the submit button
-form.addEventListener("submit", (e) => {
-  // Prevent the default form submission
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  // Create a new FormData object to collect the form data
   const formData = new FormData(form);
 
-  // Generate a random order number
-  const orderNumber = Math.floor(Math.random() * 1000000000);
+  let products = JSON.parse(localStorage.getItem("items")).map(
+    (item) => item.id
+  );
 
-  // Store the form data and order number in local storage with the items in the cart
   const order = {
-    firstName: formData.get("firstName"),
-    lastName: formData.get("lastName"),
-    address: formData.get("address"),
-    city: formData.get("city"),
-    email: formData.get("email"),
-    orderNumber: orderNumber,
-    items: JSON.parse(localStorage.getItem("items")),
+    contact: {
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      address: formData.get("address"),
+      city: formData.get("city"),
+      email: formData.get("email"),
+    },
+    products: products,
   };
 
-  let orders = JSON.parse(localStorage.getItem("orders")) || [];
-  orders.push(order);
-  localStorage.setItem("orders", JSON.stringify(orders));
-
-  // Redirect to the confirmation page with the order number in the URL query parameter
-  window.location.href = `confirmation.html?orderId=${orderNumber}`;
+  await fetch("http://localhost:3000/api/products/order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(order),
+  })
+    .then((res) => res.json())
+    .then(
+      (res) =>
+        (window.location.href = `confirmation.html?orderId=${res.orderId}`)
+    );
 });

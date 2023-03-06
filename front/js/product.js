@@ -52,7 +52,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
       let q = Number(qty.value);
 
       // Create a unique ID for the product using its ID and selected color
-      addToCart.setAttribute("data-id", id + color.value);
+      addToCart.setAttribute("data-id", id);
       let uniqueID = addToCart.dataset.id;
 
       // Create a product object with all the necessary details
