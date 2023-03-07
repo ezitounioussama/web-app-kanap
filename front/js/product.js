@@ -84,7 +84,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
       } else {
         // If the product doesn't exist, add it to the cart
         items.push(products);
-        Swal.fire("Good job!", "The item is added to cart", "success");
+        alert("Good job!", "The item is added to cart", "success");
       }
 
       // Save the updated cart to localStorage

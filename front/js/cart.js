@@ -86,13 +86,29 @@ form.addEventListener("submit", async (e) => {
     (item) => item.id
   );
 
+  const firstName = formData.get("firstName");
+  const lastName = formData.get("lastName");
+  const address = formData.get("address");
+  const city = formData.get("city");
+  const email = formData.get("email");
+
+  // Regular expression to validate email addresses
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Validate the email field
+  if (!emailRegex.test(email)) {
+    const emailErrorMsg = document.getElementById("emailErrorMsg");
+    emailErrorMsg.innerText = "Please enter a valid email address.";
+    return;
+  }
+
   const order = {
     contact: {
-      firstName: formData.get("firstName"),
-      lastName: formData.get("lastName"),
-      address: formData.get("address"),
-      city: formData.get("city"),
-      email: formData.get("email"),
+      firstName: firstName,
+      lastName: lastName,
+      address: address,
+      city: city,
+      email: email,
     },
     products: products,
   };
