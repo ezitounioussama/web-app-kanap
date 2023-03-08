@@ -51,6 +51,18 @@ fetch(`http://localhost:3000/api/products/${id}`)
     addToCart.addEventListener("click", () => {
       let q = Number(qty.value);
 
+      // Check if the selected quantity is valid
+      if (q <= 0 || q > 100) {
+        alert("Please enter a valid quantity (between 1 and 100)");
+        return;
+      }
+
+      // Check if a color is selected
+      if (color.value === "") {
+        alert("Please select a color");
+        return;
+      }
+
       // Create a unique ID for the product using its ID and selected color
       addToCart.setAttribute("data-id", id);
       let uniqueID = addToCart.dataset.id;
@@ -84,7 +96,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
       } else {
         // If the product doesn't exist, add it to the cart
         items.push(products);
-        alert("Good job!", "The item is added to cart", "success");
+        alert("The item is added to cart");
       }
 
       // Save the updated cart to localStorage

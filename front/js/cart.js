@@ -30,11 +30,14 @@ const deleteProduct = (event) => {
   updateTotalPrice();
 };
 
-section.innerHTML = items
-  .map((e) => {
-    total.innerHTML = Sum(e);
+if (items.length === 0) {
+  section.innerHTML = "<h3>No items in the cart</h3>";
+} else {
+  section.innerHTML = items
+    .map((e) => {
+      total.innerHTML = Sum(e);
 
-    return `<article class="cart__item" data-id="${e.id}">
+      return `<article class="cart__item" data-id="${e.id}">
     <div class="cart__item__img">
       <img src="${e.img}" alt="${e.imgAlt}">
     </div>
@@ -42,7 +45,7 @@ section.innerHTML = items
       <div class="cart__item__content__description">
         <h2>${e.title}</h2>
         <p>${e.color}</p>
-        <p>${e.price} $</p>
+        <p>${e.price} €</p>
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
@@ -55,9 +58,9 @@ section.innerHTML = items
       </div>
     </div>
     </article>`;
-  })
-  .join("");
-
+    })
+    .join("");
+}
 // Listen for 'change' event on all the quantity inputs
 const quantityInputs = document.querySelectorAll(".itemQuantity");
 quantityInputs.forEach((input) => {
@@ -79,6 +82,14 @@ const form = document.querySelector(".cart__order__form");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  if (items.length === 0) {
+    alert(
+      "Your cart is empty. Please add items to your cart before placing an order."
+    );
+
+    return;
+  }
 
   const formData = new FormData(form);
 
